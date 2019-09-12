@@ -13,7 +13,7 @@ from models.state import State
 from models.user import User
 from os import getenv
 import sqlalchemy
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, func
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 classes = {"Amenity": Amenity, "City": City,
@@ -77,13 +77,21 @@ class DBStorage:
 
     def get(self, cls, id):
         """ This method retrieves one object """
-        llave = '' + cls + '.' + id
-        obj = self.__session.query(classes[cls].get(llave))
+        #llave = '' + cls + '.' + id
+        llave = '' + id
+        #obj = self.__session.query(cls).get(llave)
+        obj = self.__session.query(State).get(id)
         return obj
 
     def count(self, cls=None):
-        """ For counting all objects"""
-        for cate in classes:
-            if cls is None or cls is classes[cate] or cls is cate:
-                objs = self.__session.query(classes[cate])
-                return objs.count()
+        """For counting all objects"""
+        filter1 = {'State':State.id,'Amenity':Amenity.id,'City':City.id,'Place':Place.id,'Review':Review.id,'User':User.id}
+        if cls is not None:
+            r = self.__session.query(func.count(filter1[cls]))       
+            result = self.__session.execute(r)
+            return(result.first()[0])
+        else:
+            s = 0
+            for key, value in filter1.items():
+                s += self.count(key)
+            return s
