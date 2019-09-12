@@ -8,7 +8,7 @@ from models import storage
 @app_views.route('/status')
 def status():
     """This route returns a json codified message """
-    return jsonify({status:"OK"})
+    return jsonify(status="OK")
 
 
 @app_views.route('/stats')
