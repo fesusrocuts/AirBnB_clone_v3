@@ -71,11 +71,9 @@ class FileStorage:
 
     def get(self, cls, id):
         """ This method gets returns an object if it's found"""
-        llave = cls + id
-        for key, value in self.__object.items():
-            if llave == key:
-                return value
-        return None
+        llave = '' + cls + '.' + id
+        if llave in self.__objects:
+            return self.__objects.get(llave)
 
     def count(self, cls=None):
         """ This method counts the number of objects based in class """
