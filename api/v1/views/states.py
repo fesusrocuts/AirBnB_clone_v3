@@ -31,7 +31,7 @@ def delete_state(state_id):
     """ This view allows to erase an state"""
     estadito = storage.get("State", state_id)
     if estadito is None:
-        return abort(404)
+        return jsonify(abort(404))
     estadito.delete()
     storage.save()
     dictio = {}
@@ -44,9 +44,9 @@ def post_state():
     if request.is_json:
         dicto = request.get_json()
     else:
-        return abort(400, 'Not a JSON')
+        return jsonify(abort(400, 'Not a JSON'))
     if 'name' not in dicto:
-        return abort(400, 'Missing name')
+        return jsonify(abort(400, 'Missing name'))
     enviando = State()
     for key, value in dicto.items():
         setattr(enviando, key, value)
@@ -64,7 +64,7 @@ def put_state(state_id):
     if request.is_json:
         dicto = request.get_json()
     else:
-        return abort(400, 'Not a JSON')
+        return jsonify(abort(400, 'Not a JSON'))
     for key, value in dicto.items():
         if key != 'id' and key != 'created_at' and key != 'updated_at':
             setattr(enviando, key, value)
