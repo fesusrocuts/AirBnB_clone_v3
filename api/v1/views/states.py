@@ -15,4 +15,9 @@ def list_states():
     return jsonify(ouch)
 
 
-
+@app_views.route('/states/<state_id>')
+def get_states(state_id):
+    """ This view is for getting a specific state """
+    estadito = storage.get("State", state_id)
+    estadito = estadito.to_dict()
+    return jsonify(estadito)
