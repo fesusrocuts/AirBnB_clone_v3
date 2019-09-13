@@ -2,12 +2,13 @@
 """ This file sets the States view"""
 from api.v1.views import app_views
 from flask import jsonify, abort, request
+from models.base_model import BaseModel
 from models import storage
-from models.state import City
+from models.city import City
 
 
 @app_views.route('/states/<state_id>/cities', methods=['GET'])
-def list_cities():
+def list_cities(state_id):
     """ This view is for listing all the states"""
     st = storage.get("State", state_id)
     if st is None:
@@ -30,8 +31,8 @@ def get_city(city_id):
 
 
 @app_views.route('/cities/<city_id>', methods=['DELETE'])
-def delete_city(state_id):
-    """ This view allows to erase an state"""
+def delete_city(city_id):
+    """ This view allows to erase an object"""
     st = storage.get("City", city_id)
     if st is None:
         return jsonify(abort(404))
