@@ -59,7 +59,7 @@ def post_city(state_id):
         storage.new(enviando)
         storage.save()
         enviando = storage.get("City", enviando.id)
-        return (jsonify(enviando.to_json()), 201)
+        return (jsonify(enviando.to_dict()), 201)
 
 
 @app_views.route('/cities/<city_id>', methods=['PUT'])
