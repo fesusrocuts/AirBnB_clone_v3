@@ -3,7 +3,7 @@
 Contains the class DBStorage
 """
 
-import models
+import sqlalchemy
 from models.amenity import Amenity
 from models.base_model import BaseModel, Base
 from models.city import City
@@ -12,7 +12,6 @@ from models.review import Review
 from models.state import State
 from models.user import User
 from os import getenv
-import sqlalchemy
 from sqlalchemy import create_engine, func
 from sqlalchemy.orm import scoped_session, sessionmaker
 
@@ -81,16 +80,10 @@ class DBStorage:
 
     def count(self, cls=None):
         """For counting all objects"""
-<<<<<<< HEAD
         filter1 = {'State': State.id, 'Amenity': Amenity.id, 'City': City.id,
                    'Place': Place.id, 'Review': Review.id, 'User': User.id}
         if cls is not None:
             r = self.__session.query(func.count(filter1[cls]))
-=======
-        filter1 = {'State':State.id,'Amenity':Amenity.id,'City':City.id,'Place':Place.id,'Review':Review.id,'User':User.id}
-        if cls is not None:
-            r = self.__session.query(func.count(filter1[cls]))       
->>>>>>> 5933808c4f5150a28ef0ab34a8dfd841a2e64dda
             result = self.__session.execute(r)
             return(result.first()[0])
         else:

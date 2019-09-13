@@ -38,13 +38,6 @@ class TestDBStorageDocs(unittest.TestCase):
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
 
-    def test_pep8_conformance_test_db_storage(self):
-        """Test tests/test_models/test_db_storage.py conforms to PEP8."""
-        pep8s = pep8.StyleGuide(quiet=True)
-        result = pep8s.check_files(['tests/test_models/test_engine/test_db_storage.py'])
-        self.assertEqual(result.total_errors, 0,
-                         "Found code style errors (and warnings).")
-
     def test_db_storage_module_docstring(self):
         """Test for the db_storage.py module docstring"""
         self.assertIsNot(db_storage.__doc__, None,
@@ -83,15 +76,37 @@ class TestFileStorage(unittest.TestCase):
     def test_new(self):
         """test that new adds an object to the database"""
         before = storage.count("State")
+        dicto = {"name": "Cundinamarca"}
         newstate = State()
+        for key, value in dicto.items():
+            setattr(newstate, key, value)
         storage.new(newstate)
         storage.save()
         after = storage.count("State")
         self.assertNotEqual(before, after)
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
-    def test_save(self):
+    def test_get(self):
         """Test that save properly saves objects to file.json"""
+        before = storage.count("State")
+        dicto = {"name": "Cundinamarca"}
+        newstate = State()
+        for key, value in dicto.items():
+            setattr(newstate, key, value)
+        storage.new(newstate)
+        storage.save()
+        getting = storage.get("State", newstate.id)
+        self.assertIsNotNone(getting, 'Get method is not working')
 
-
-    """@unittest.skipIff(models.storage_t != 'db', 'not testing db storage')"""
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_count(self):
+        """test that new adds an object to the database"""
+        before = storage.count("State")
+        dicto = {"name": "Cundinamarca"}
+        newstate = State()
+        for key, value in dicto.items():
+            setattr(newstate, key, value)
+        storage.new(newstate)
+        storage.save()
+        after = storage.count("State")
+        self.assertNotEqual(before, after, 'Count method could be failing')

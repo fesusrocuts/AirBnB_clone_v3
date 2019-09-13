@@ -3,6 +3,7 @@
 Contains the TestFileStorageDocs classes
 """
 
+from models import storage
 from datetime import datetime
 import inspect
 import models
@@ -113,3 +114,29 @@ class TestFileStorage(unittest.TestCase):
         with open("file.json", "r") as f:
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_get(self):
+        """Test that save properly saves objects to file.json"""
+        before = storage.count("State")
+        dicto = {"name": "Cundinamarca"}
+        newstate = State()
+        for key, value in dicto.items():
+            setattr(newstate, key, value)
+        storage.new(newstate)
+        storage.save()
+        getting = storage.get("State", newstate.id)
+        self.assertIsNotNone(getting, 'Get method is not working')
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing db storage")
+    def test_count(self):
+        """test that new adds an object to the database"""
+        before = storage.count("State")
+        dicto = {"name": "Cundinamarca"}
+        newstate = State()
+        for key, value in dicto.items():
+            setattr(newstate, key, value)
+        storage.new(newstate)
+        storage.save()
+        after = storage.count("State")
+        self.assertNotEqual(before, after, 'Count method could be failing')
