@@ -35,7 +35,7 @@ def delete_state(state_id):
     estadito.delete()
     storage.save()
     dictio = {}
-    return dictio, 200
+    return jsonify(dictio), 200
 
 
 @app_views.route('/states', methods=['POST'])
