@@ -47,7 +47,7 @@ def post_amenity():
         return jsonify(abort(400, 'Not a JSON'))
     if 'name' not in dicto:
         return jsonify(abort(400, 'Missing name'))
-    enviando = Amenity(name=dicto['name')
+    enviando = Amenity(name=dicto['name'])
     storage.new(enviando)
     storage.save()
     return jsonify(enviando.to_dict()), 201
