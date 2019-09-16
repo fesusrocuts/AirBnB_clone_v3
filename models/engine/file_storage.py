@@ -80,8 +80,9 @@ class FileStorage:
         conta = 0
         if cls is not None:
             for key, value in self.__objects.items():
-                if cls == value.__class__name__ or cls == value.__class__:
+                if cls == value.__class__.__name__ or cls == value.__class__:
                     conta += 1
         else:
-            conta = len(self.__objects.items())
+            for key, value in self.__objects.items():
+                conta += 1
         return conta
